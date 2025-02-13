@@ -60,7 +60,7 @@
         <div class="wish">
           <h3 class="wish-hbd">Happy Valentine's Day Aruukesha</h3>
           <h5 id="wishText">kuch kuch</h5>
-          <audio id="audio" controls muted autoplay>
+          <audio id="audio">
             <source src="./song/song.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
@@ -127,19 +127,37 @@
       </div>
     </div>
     <script>
-   
-      function playAudioAfterDelay(delay) {
-          setTimeout(function() {
-              var audio = document.getElementById("audio");
-              audio.muted = false;
-              audio.play().catch(function(error) {
-                  console.error("Error playing audio:", error);
+      document.addEventListener('DOMContentLoaded', function() {
+          const audio = document.getElementById('audio');
+          
+          // Add play button to the page
+          const playButton = document.createElement('button');
+          playButton.innerHTML = '▶️ Play Music';
+          playButton.style.cssText = 'position: fixed; bottom: 20px; right: 20px; z-index: 1000; padding: 10px; border-radius: 5px; background: #ff69b4; color: white; border: none; cursor: pointer;';
+          document.body.appendChild(playButton);
+      
+          // Play audio on button click
+          playButton.addEventListener('click', function() {
+              audio.volume = 0.5; // Set volume to 50%
+              audio.play().then(() => {
+                  playButton.style.display = 'none';
+                  console.log("Audio playing");
+              }).catch(error => {
+                  console.log("Error playing audio:", error);
               });
-          }, delay);
-      }
-
-      playAudioAfterDelay(32000); 
-  </script>
+          });
+      
+          // Attempt to autoplay after animation
+          setTimeout(function() {
+              audio.volume = 0.5;
+              audio.play().catch(error => {
+                  console.log("Autoplay blocked:", error);
+                  // Keep button visible if autoplay fails
+                  playButton.style.display = 'block';
+              });
+          }, 32000);
+      });
+    </script>
     
   </body>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
